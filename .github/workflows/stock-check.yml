@@ -1,26 +1,25 @@
 name: Tripole Stock Checker
 
 on:
-schedule:
-- cron: '*/5 * * * *'
-
-workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
 
 jobs:
-check-stock:
-runs-on: ubuntu-latest
+  check-stock:
+    runs-on: ubuntu-latest
 
-steps:
-  - name: Checkout Repository
-    uses: actions/checkout@v4
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-  - name: Setup Node.js
-    uses: actions/setup-node@v4
-    with:
-      node-version: 20
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-  - name: Install Dependencies
-    run: npm install
+      - name: Install Dependencies
+        run: npm install
 
-  - name: Run Stock Checker
-    run: node index.js
+      - name: Run Stock Checker
+        run: node index.js
