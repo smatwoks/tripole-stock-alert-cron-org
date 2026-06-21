@@ -1,51 +1,33 @@
+const express = require("express");
 const axios = require("axios");
 
-async function checkStock() {
-try {
-const { data } = await axios.get(
-"https://tripole.in/products/tripole-walker-pro-60-litre-rucksack-for-trekking-and-hiking-black.js"
-);
+const app = express();
 
-const variant = data.variants.find(
-  v => v.id === 54761702129955
-);
+app.get("/check-stock", async (req, res) => {
+  try {
+    const { data } = await axios.get(
+      "https://tripole.in/products/tripole-walker-pro-60-litre-rucksack-for-trekking-and-hiking-black.js"
+    );
 
-if (variant && variant.available) {
+    const variant = data.variants.find(
+      v => v.id === 54761702129955
+    );
 
-  await axios.post(
-    "https://ntfy.sh/tripole-alerts",
-    "🚨 Tripole Walker Pro 60L is AVAILABLE!"
-  );
-   await axios.post(
-    "https://ntfy.sh/tripole-alerts",
-    "🚨 Tripole Walker Pro 60L is AVAILABLE!"
-  );
-  await axios.post(
-    "https://ntfy.sh/tripole-alerts",
-    "🚨 Tripole Walker Pro 60L is AVAILABLE!"
-  );
-   await axios.post(
-    "https://ntfy.sh/tripole-alerts",
-    "🚨 Tripole Walker Pro 60L is AVAILABLE!"
-  );
-  await axios.post(
-    "https://ntfy.sh/tripole-alerts",
-    "🚨 Tripole Walker Pro 60L is AVAILABLE!"
-  );
+    if (variant?.available) {
+      await axios.post(
+        "https://ntfy.sh/tripole-bhumireddy-alert",
+        "🚨 Tripole Walker Pro 60L is AVAILABLE!"
+      );
+    }
 
-  console.log("Notification Sent");
-} else {
-//    await axios.post(
-//     "https://ntfy.sh/tripole-alerts",
-//     "🚨 Tripole Walker Pro 60L is AVAILABLE!"
-//   );
-   
-  console.log("Still Sold Out");
-}
+    res.send("Checked successfully");
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
 
-} catch (error) {
-console.log(error.message);
-}
-}
+const PORT = process.env.PORT || 3000;
 
-checkStock();
+app.listen(PORT, () => {
+  console.log(`Running on port ${PORT}`);
+});
